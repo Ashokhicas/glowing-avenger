@@ -1,0 +1,23 @@
+Success!
+  * Foreman is running at https://vm-doc-foreman.zenex.com
+      Initial credentials are admin / fesT6Tyvi89Mrjsa
+  * Foreman Proxy is running at https://vm-doc-foreman.zenex.com:8443
+  * Puppetmaster is running at port 8140
+  The full log is at /var/log/foreman-installer/foreman.log
+
+
+Run container with hostname and ports:
+docker run --hostname=vm-doc-foreman --privileged --name css1 -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 2222:22 -p 3306:3306 -p 8080:80 -p 8443:8443 -d mianasbat/centos-ssh-systemd
+
+Open ports on any running container: https://forums.docker.com/t/how-to-expose-port-on-running-container/3252/13
+Docker port <container_id>
+docker inspect d12e85aa1367 | grep IPAddress
+
+HOST> iptables -t nat -A DOCKER -p tcp --dport 443 -j DNAT --to-destination 172.17.0.2:443
+HOST> iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport https
+HOST> iptables -A DOCKER -j ACCEPT -p tcp --destination 172.17.0.2 --dport https
+
+Export and import docker image: https://stackoverflow.com/questions/28734086/how-to-move-docker-containers-between-different-hosts
+1. Save the docker image into archive: docker save image_name > image_name.tar
+2. copy on another machine
+3. on that other docker machine, run docker load in a following way: cat image_name.tar | docker load
