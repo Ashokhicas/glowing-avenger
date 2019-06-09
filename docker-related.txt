@@ -21,3 +21,8 @@ Export and import docker image: https://stackoverflow.com/questions/28734086/how
 1. Save the docker image into archive: docker save image_name > image_name.tar
 2. copy on another machine
 3. on that other docker machine, run docker load in a following way: cat image_name.tar | docker load
+
+
+---------------
+
+https://stackoverflow.com/questions/28734086/how-to-move-docker-containers-between-different-hosts
